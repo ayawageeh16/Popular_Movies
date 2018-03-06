@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">PopularMovies</string>
+    <string name="movie_poster">moviePoster</string>
+    <string name="error_message">failed to get results,please try again</string>
+    <string name="Sort_ByPopular">Most popular</string>
+    <string name="Sort_ByTopRated">Top Rated</string>
+    <string name="movie_details_title">Movie details</string>
+    <string name="trailer_tv">Trailers:</string>
+    <string name="movie_cover">movie cover photo</string>
+    <string name="tariler">Trailer</string>
+</resources>
