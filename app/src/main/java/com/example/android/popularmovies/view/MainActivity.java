@@ -31,6 +31,7 @@ public class MainActivity extends AppCompatActivity {
     TextView errorMessageTv;
     RecyclerView recyclerView;
     String sortBy ;
+    String errorMessageDisplay;
     List<MovieModel> movieDetails = new ArrayList<MovieModel>();
 
     @Override
@@ -59,7 +60,6 @@ public class MainActivity extends AppCompatActivity {
             try {searchQueryExecute();
             } catch (MalformedURLException e) {
                 e.printStackTrace();}
-
         }
     }
     private void  setRecyclerView (RecyclerView recyclerView){
@@ -85,6 +85,7 @@ public class MainActivity extends AppCompatActivity {
     public void showErrorMessage (){
         errorMessageTv.setVisibility(View.VISIBLE);
         recyclerView.setVisibility(View.INVISIBLE);
+        errorMessageTv.setText(errorMessageDisplay);
     }
     // execute network tasks and JSON in background
     public class FetchMovieData implements AsyncTaskCompleteListener{
@@ -104,7 +105,9 @@ public class MainActivity extends AppCompatActivity {
         public void onTrailerJsonTaskComplete(List<TrailerModel> trailers) {}
 
         @Override
-        public void errorMessage(String errorMessage) {}
+        public void errorMessage(String errorMessage) {
+            errorMessageDisplay=errorMessage;
+        }
     }
 
     @Override

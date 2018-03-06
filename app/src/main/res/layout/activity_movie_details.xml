@@ -4,52 +4,39 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     tools:context="com.example.android.popularmovies.view.MovieDetails"
-    android:padding="5dp">
-<android.support.constraint.ConstraintLayout
+    android:padding="5dp"
+    android:background="@color/main_color_them">
+<LinearLayout
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="5dp"
-    android:id="@+id/constraintlayout">
+    android:orientation="vertical"
+    android:id="@+id/constraintlayout"
+    >
 
     <ImageView
         android:id="@+id/img_cover"
-        android:contentDescription="@string/movie_cover"
         android:layout_width="match_parent"
         android:layout_height="145dp"
+        android:contentDescription="@string/movie_cover"
         android:scaleType="fitXY"
-        android:layout_marginBottom="8dp"
-        app:layout_constraintBottom_toTopOf="@+id/linearLayout2"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0"
         app:srcCompat="@drawable/ic_launcher_background" />
 
     <LinearLayout
         android:id="@+id/linearLayout2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:layout_marginTop="8dp"
-        android:padding="5dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.37">
+        android:padding="2dp">
 
         <ImageView
             android:id="@+id/img_pos"
             android:layout_width="143dp"
-            android:layout_height="212dp"
+            android:layout_height="213dp"
             android:layout_gravity="center_horizontal"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="68dp"
             android:layout_marginEnd="8dp"
+            android:layout_marginStart="5dp"
+            android:layout_marginTop="40dp"
             android:contentDescription="@string/movie_poster"
             android:scaleType="fitXY"
             app:layout_constraintLeft_toLeftOf="parent"
@@ -70,12 +57,7 @@
                 android:layout_gravity="top"
                 android:layout_marginTop="16dp"
                 android:textSize="25sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.227"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/img_pos"
-                app:layout_constraintTop_toBottomOf="@+id/img_cover" />
+               android:textColor="@color/main_color_text" />
 
             <TextView
                 android:id="@+id/tv_year"
@@ -83,28 +65,15 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:textSize="20sp"
-                app:layout_constraintHorizontal_bias="0.676"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tv_title" />
-
-            <TextView
-                android:id="@+id/tv_duration"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="15sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.492"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/img_pos"
-                app:layout_constraintTop_toBottomOf="@+id/tv_year" />
+                android:textColor="@color/main_color_text"
+                />
 
             <TextView
                 android:id="@+id/tv_rate"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textSize="15sp" />
+                android:textSize="15sp"
+                android:textColor="@color/main_color_text"/>
         </LinearLayout>
     </LinearLayout>
 
@@ -123,8 +92,9 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="15dp"
         android:layout_marginBottom="15dp"
+        android:textColor="@color/main_color_text"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintRight_toRightOf="parent"
@@ -144,11 +114,12 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="31dp"
+        android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         tools:layout_editor_absoluteY="440dp"
         android:layout_margin="5dp"
+        android:orientation="vertical"
         android:id="@+id/linearlayout4"
         app:layout_constraintBottom_toBottomOf="@id/overview_down_view"
         app:layout_constraintBottom_toTopOf="@+id/constraintlayout"
@@ -157,6 +128,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="start"
+            android:textColor="@color/main_color_text"
             android:id="@+id/trailer"
             android:text="@string/trailer_tv"
             android:textSize="20sp"
@@ -165,11 +137,15 @@
      <android.support.v7.widget.RecyclerView
          android:layout_width="match_parent"
          android:layout_height="wrap_content"
-         app:layout_constraintTop_toBottomOf="@+id/trailer"
-         app:layout_constraintBottom_toTopOf="@+id/constraintlayout"
-         android:id="@+id/trailers_rv"></android.support.v7.widget.RecyclerView>
+         android:id="@+id/trailers_rv"
+         android:visibility="visible" >
+     </android.support.v7.widget.RecyclerView>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/error_tv"
+            android:visibility="invisible"/>
 
     </LinearLayout>
-
-</android.support.constraint.ConstraintLayout>
+</LinearLayout>
 </ScrollView>

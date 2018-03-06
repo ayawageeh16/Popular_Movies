@@ -3,12 +3,15 @@ package com.example.android.popularmovies.view;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.method.MovementMethod;
 import android.text.method.ScrollingMovementMethod;
+import android.view.View;
+import android.view.ViewStructure;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -29,6 +32,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static android.icu.lang.UCharacter.GraphemeClusterBreak.L;
+import static android.support.v7.widget.LinearLayoutManager.HORIZONTAL;
 import static android.support.v7.widget.LinearLayoutManager.VERTICAL;
 
 public class MovieDetails extends AppCompatActivity {
@@ -37,11 +41,12 @@ public class MovieDetails extends AppCompatActivity {
     ImageView posterImg;
     TextView movieTitle;
     TextView movieYear;
-    TextView movieDuration;
     TextView movieRate;
     TextView movieOverview;
+    TextView errorMessageTv;
     RecyclerView recyclerView ;
     MovieModel movie;
+    String errorMessageDisplay;
     List<TrailerModel> trailerslist = new ArrayList<>();
 
     @Override
@@ -52,9 +57,9 @@ public class MovieDetails extends AppCompatActivity {
         coverImg = findViewById(R.id.img_cover);
         posterImg = findViewById(R.id.img_pos);
         movieYear = findViewById(R.id.tv_year);
-        movieDuration= findViewById(R.id.tv_duration);
         movieRate = findViewById(R.id.tv_rate);
         movieOverview =findViewById(R.id.tv_overview);
+        errorMessageTv =findViewById(R.id.error_tv);
         recyclerView =findViewById(R.id.trailers_rv);
         setRecyclerView(recyclerView);
 
@@ -77,8 +82,6 @@ public class MovieDetails extends AppCompatActivity {
         } catch (MalformedURLException e) {
             e.printStackTrace();
         }
-
-
     }
     void setRecyclerView (RecyclerView recyclerView){
         LinearLayoutManager layoutManager = new LinearLayoutManager(this,VERTICAL,true);
@@ -91,7 +94,8 @@ public class MovieDetails extends AppCompatActivity {
             //call JSON Async task
             URL TrailerSearchQuery = NetworkUtils.buildURL(String.valueOf(movie.id)+"/"+ "videos");
             new TrailerJsonAsyncTask(this, new FetchTrailerData()).execute(TrailerSearchQuery);
-        } else {//showErrorMessage();
+        } else {
+            showErrorMessage();
         }
     }
     private Boolean isConnected (){
@@ -99,6 +103,11 @@ public class MovieDetails extends AppCompatActivity {
         NetworkInfo activeNetwork = connectivityManager.getActiveNetworkInfo();
         Boolean isConnected = activeNetwork !=null&& activeNetwork.isConnectedOrConnecting();
         return isConnected;
+    }
+    public void showErrorMessage (){
+        errorMessageTv.setVisibility(View.VISIBLE);
+        recyclerView.setVisibility(View.INVISIBLE);
+        errorMessageTv.setText(errorMessageDisplay);
     }
     public class FetchTrailerData implements AsyncTaskCompleteListener{
         @Override
@@ -109,12 +118,16 @@ public class MovieDetails extends AppCompatActivity {
           TrailerAdapter adapter= new TrailerAdapter(trailerslist, new TrailerAdapter.OnItemClickedListerner() {
                 @Override
                 public void onItemClicked(TrailerModel trailer) {
-                      //youtube
-                }
+                    Intent intent = new Intent(Intent.ACTION_VIEW);
+                    intent.setData(Uri.parse("https://www.youtube.com/watch?v="+trailer.key));
+                    startActivity(intent);
+                     }
             });
             recyclerView.setAdapter(adapter);
         }
         @Override
-        public void errorMessage(String errorMessage) {}
+        public void errorMessage(String errorMessage) {
+            errorMessageDisplay =errorMessage;
+        }
     }
 }
