@@ -78,7 +78,7 @@ public class NetworkUtils {
                         movie.getString("overview");
                 String cover = IMAGE_BASE_URL + COVER_SIZE + movie.getString("backdrop_path");
                 long id = movie.getLong("id");
-               // MovieModel movieModelobject = new MovieModel(movieName, year, rate, description, poster, cover, id);
+               // MovieModel movieModelobject = new MovieModel(title, year, rate, description, poster, cover, id);
                 movies.add(new MovieModel(movieName, year, rate, description, poster, cover, id));
             }
         }

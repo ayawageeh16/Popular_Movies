@@ -74,6 +74,22 @@
                 android:layout_height="wrap_content"
                 android:textSize="15sp"
                 android:textColor="@color/main_color_text"/>
+         <LinearLayout
+             android:layout_width="wrap_content"
+             android:layout_height="wrap_content"
+             android:orientation="horizontal">
+             <TextView
+                 android:layout_width="wrap_content"
+                 android:layout_height="wrap_content"
+                 android:text="@string/add_favourite"/>
+             <ImageButton
+                 android:layout_width="wrap_content"
+                 android:layout_height="wrap_content"
+                 android:id="@+id/favourite_btn"
+                 android:onClick="addToFavourites"
+                 android:src="@mipmap/ic_launcher"/>
+         </LinearLayout>
+
         </LinearLayout>
     </LinearLayout>
 
@@ -112,7 +128,7 @@
            app:layout_constraintBottom_toTopOf="@id/linearlayout4"
         />
 
-    <LinearLayout
+        <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
@@ -124,6 +140,7 @@
         app:layout_constraintBottom_toBottomOf="@id/overview_down_view"
         app:layout_constraintBottom_toTopOf="@+id/constraintlayout"
         >
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -134,16 +151,67 @@
             android:textSize="20sp"
             app:layout_constraintBottom_toTopOf="@+id/trailers_rv"
             />
+
      <android.support.v7.widget.RecyclerView
          android:layout_width="match_parent"
          android:layout_height="wrap_content"
          android:id="@+id/trailers_rv"
          android:visibility="visible" >
+
      </android.support.v7.widget.RecyclerView>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/error_tv"
+            android:id="@+id/trailer_error_tv"
+            android:visibility="invisible"/>
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="#000000"
+        android:layout_marginTop="20dp"
+        android:id="@+id/trailers_down_view"
+        app:layout_constraintBottom_toBottomOf="@id/tv_overview"
+        app:layout_constraintBottom_toTopOf="@id/linearlayout4"
+        />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:layout_editor_absoluteY="440dp"
+        android:layout_margin="5dp"
+        android:orientation="vertical"
+        android:id="@+id/linearlayout5"
+        app:layout_constraintBottom_toBottomOf="@id/overview_down_view"
+        app:layout_constraintBottom_toTopOf="@+id/constraintlayout"
+        >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="start"
+            android:textColor="@color/main_color_text"
+            android:id="@+id/reviews"
+            android:text="@string/reviews_tv"
+            android:textSize="20sp"
+            app:layout_constraintBottom_toTopOf="@+id/trailers_rv"
+            />
+
+        <android.support.v7.widget.RecyclerView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/reviews_rv"
+            android:visibility="visible" >
+
+        </android.support.v7.widget.RecyclerView>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/reviews_error_tv"
             android:visibility="invisible"/>
 
     </LinearLayout>

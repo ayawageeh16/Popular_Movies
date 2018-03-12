@@ -24,6 +24,9 @@
         <activity
             android:name=".view.MovieDetails"
             android:label="@string/movie_details_title"
+            android:parentActivityName=".view.MainActivity" />
+        <activity android:name=".view.Favourites"
+            android:label="@string/Favourites_title"
             android:parentActivityName=".view.MainActivity"></activity>
     </application>
 

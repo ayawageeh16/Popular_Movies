@@ -9,7 +9,7 @@ import android.os.Parcelable;
 
 public class ReviewsModel implements Parcelable{
 
-    String author, content;
+    public String author, content;
 
     public ReviewsModel (String author , String content){
         this.author=author;

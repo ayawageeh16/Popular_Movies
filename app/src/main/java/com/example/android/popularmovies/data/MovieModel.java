@@ -9,25 +9,25 @@ import android.os.Parcelable;
 
 public class MovieModel implements Parcelable {
 
-    public String movieName , movieYear ,movieRate, movieDescription, poster, cover;
+    public String title, releaseDate, rate, overview, poster, cover;
     public long id;
 
     public MovieModel(String movieName , String movieYear , String movieRate ,String movieDescription, String poster, String cover, long id)
     {
-        this.movieName = movieName ;
-        this.movieYear = movieYear ;
-        this.movieRate = movieRate ;
-        this.movieDescription = movieDescription ;
+        this.title = movieName ;
+        this.releaseDate = movieYear ;
+        this.rate = movieRate ;
+        this.overview = movieDescription ;
         this.poster =poster;
         this.cover=cover;
         this.id = id;
     }
 
     protected MovieModel(Parcel in) {
-        movieName = in.readString();
-        movieYear = in.readString();
-        movieRate = in.readString();
-        movieDescription = in.readString();
+        title = in.readString();
+        releaseDate = in.readString();
+        rate = in.readString();
+        overview = in.readString();
         poster = in.readString();
         cover=in.readString();
         id = in.readLong();
@@ -52,10 +52,10 @@ public class MovieModel implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel parcel, int i) {
-        parcel.writeString(movieName);
-        parcel.writeString(movieYear);
-        parcel.writeString(movieRate);
-        parcel.writeString(movieDescription);
+        parcel.writeString(title);
+        parcel.writeString(releaseDate);
+        parcel.writeString(rate);
+        parcel.writeString(overview);
         parcel.writeString(poster);
         parcel.writeString(cover);
         parcel.writeLong(id);

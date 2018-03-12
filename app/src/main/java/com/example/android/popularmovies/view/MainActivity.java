@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.support.annotation.NonNull;
-import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -12,11 +11,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.android.popularmovies.adapter.MovieAdapter;
 import com.example.android.popularmovies.data.ReviewsModel;
@@ -113,7 +110,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         int itemClicked = item.getItemId();
-        if (itemClicked == R.id.popular_movies_sort) {
+        if (itemClicked == R.id.popular_movies_sort_menu_item) {
             sortBy = "popular";
             try {
                 searchQueryExecute();
@@ -122,13 +119,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 e.printStackTrace();
             }
         }
-        else if (itemClicked ==R.id.top_rated_sort) {
+        else if (itemClicked ==R.id.top_rated_sort_menu_item) {
             sortBy = "top_rated";
             try {
                 searchQueryExecute();
                 drawerLayout.closeDrawers();
-            } catch (MalformedURLException e) {
-            }
+            } catch (MalformedURLException e) {}
+        } else if (itemClicked == R.id.favourites_menu_item){
+            Intent intent = new Intent(MainActivity.this, Favourites.class);
+            startActivity(intent);
+            drawerLayout.closeDrawers();
         }
         return false;
     }
@@ -146,13 +146,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     startActivity(intent);}
             });
             recyclerView.setAdapter(adapter);}
-
         @Override
         public void onTrailerJsonTaskComplete(List<TrailerModel> trailers) {}
-
         @Override
         public void onReviewsJsonTaskComplete(List<ReviewsModel> reviews) {}
-
         @Override
         public void errorMessage(String errorMessage) {
             errorMessageDisplay=errorMessage;
@@ -161,10 +158,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-
-        if (toggle.onOptionsItemSelected(item)) {
-            return true;
-        }
+        if (toggle.onOptionsItemSelected(item)) {return true;}
         return super.onOptionsItemSelected(item);
     }
 }
