@@ -19,6 +19,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.android.popularmovies.adapter.MovieAdapter;
+import com.example.android.popularmovies.data.ReviewsModel;
 import com.example.android.popularmovies.data.TrailerModel;
 import com.example.android.popularmovies.utils.AsyncTaskCompleteListener;
 import com.example.android.popularmovies.utils.MovieJsonAsyncTask;
@@ -148,6 +149,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         @Override
         public void onTrailerJsonTaskComplete(List<TrailerModel> trailers) {}
+
+        @Override
+        public void onReviewsJsonTaskComplete(List<ReviewsModel> reviews) {}
 
         @Override
         public void errorMessage(String errorMessage) {
