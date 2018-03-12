@@ -8,4 +8,11 @@
     <string name="trailer_tv">Trailers:</string>
     <string name="movie_cover">movie cover photo</string>
     <string name="tariler">Trailer</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="menu_item_top_rated">Top rated movies</string>
+    <string name="menu_item_popular_movies">Popular movies</string>
+    <string name="menu_item_settings">Settings</string>
 </resources>
