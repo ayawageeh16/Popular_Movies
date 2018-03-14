@@ -20,4 +20,5 @@
     <string name="menu_item_favourites_movies">Favourites</string>
     <string name="Favourites_title">Favourites</string>
     <string name="favourite_img">movie poster</string>
+    <string name="delete">Delete</string>
 </resources>
