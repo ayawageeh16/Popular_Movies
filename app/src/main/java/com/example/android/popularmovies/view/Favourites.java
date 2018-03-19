@@ -9,6 +9,8 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.util.Log;
+import android.view.View;
+import android.widget.TextView;
 
 import com.example.android.popularmovies.R;
 import com.example.android.popularmovies.adapter.FavouritesAdapter;
@@ -26,9 +28,8 @@ import static android.support.v7.widget.LinearLayoutManager.VERTICAL;
 public class Favourites extends AppCompatActivity {
 
     RecyclerView recyclerView ;
-    SQLiteDatabase mDB;
+    TextView error_tv;
     FavouritesAdapter adapter;
-    Cursor cursor;
 
     @Override
     protected void onResume() {
@@ -40,6 +41,7 @@ public class Favourites extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_favourites);
+        error_tv =findViewById(R.id.favourites_error_message);
         recyclerView = findViewById(R.id.favourites_rv);
         setRecyclerView(recyclerView);
         queryFavourites();
@@ -89,8 +91,6 @@ public class Favourites extends AppCompatActivity {
            recyclerView.setAdapter(adapter);
        }
        @Override
-       public void errorMessage(String errorMessage) {
-
-       }
+       public void errorMessage(String errorMessage) {}
    }
 }

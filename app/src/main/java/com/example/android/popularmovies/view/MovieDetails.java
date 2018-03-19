@@ -195,7 +195,8 @@ public class MovieDetails extends AppCompatActivity {
         public void onFavouritesTaskComplete(Cursor cursor) {}
 
         @Override
-        public void errorMessage(String errorMessage) {errorMessageDisplay =errorMessage;
+        public void errorMessage(String errorMessage) {
+            errorMessageDisplay =errorMessage;
         }
     }
 }
