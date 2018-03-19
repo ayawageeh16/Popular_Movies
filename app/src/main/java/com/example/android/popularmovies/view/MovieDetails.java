@@ -2,6 +2,7 @@ package com.example.android.popularmovies.view;
 
 import android.content.ContentValues;
 import android.content.Intent;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -157,9 +158,16 @@ public class MovieDetails extends AppCompatActivity {
         values.put(FavouritesContract.FavouritesEntry.COLUMN_MOVIE_RATE, movie.rate);
         values.put(FavouritesContract.FavouritesEntry.COLUMN_MOVIE_POSTER, movie.poster);
         values.put(FavouritesContract.FavouritesEntry.COLUMN_MOVIE_COVER, movie.cover);
-        mDB.insert(FavouritesContract.FavouritesEntry.TABLE_NAME,null, values);
-        mDB.close();
-        Toast.makeText(this,movie.title+"is added to your favourites",Toast.LENGTH_LONG).show();
+        /*mDB.insert(FavouritesContract.FavouritesEntry.TABLE_NAME,null, values);
+        mDB.close();*/
+        Uri uri= getContentResolver().insert(FavouritesContract.FavouritesEntry.CONTENT_URI,values);
+        if (uri !=null){
+            Toast.makeText(this,uri.toString(),Toast.LENGTH_LONG).show();
+        }
+        else {
+            Toast.makeText(this,"failed",Toast.LENGTH_LONG).show();
+        }
+
     }
 
     public class FetchData implements AsyncTaskCompleteListener{
@@ -184,6 +192,10 @@ public class MovieDetails extends AppCompatActivity {
             ReviewsAdapter adapter = new ReviewsAdapter(reviewsList);
             reviewRecyclerView.setAdapter(adapter);
         }
+
+        @Override
+        public void onFavouritesTaskComplete(Cursor cursor) {}
+
         @Override
         public void errorMessage(String errorMessage) {errorMessageDisplay =errorMessage;
         }

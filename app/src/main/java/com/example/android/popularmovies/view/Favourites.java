@@ -2,16 +2,24 @@ package com.example.android.popularmovies.view;
 
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.support.v7.app.AppCompatActivity;
+import android.net.Uri;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
+import android.util.Log;
 
 import com.example.android.popularmovies.R;
 import com.example.android.popularmovies.adapter.FavouritesAdapter;
 import com.example.android.popularmovies.data.FavouritesContract;
-import com.example.android.popularmovies.data.FavouritesDBHelper;
+import com.example.android.popularmovies.data.MovieModel;
+import com.example.android.popularmovies.data.ReviewsModel;
+import com.example.android.popularmovies.data.TrailerModel;
+import com.example.android.popularmovies.utils.AsyncTaskCompleteListener;
+import com.example.android.popularmovies.utils.FavouritesQueryAsyncTask;
+
+import java.util.List;
 
 import static android.support.v7.widget.LinearLayoutManager.VERTICAL;
 
@@ -20,17 +28,21 @@ public class Favourites extends AppCompatActivity {
     RecyclerView recyclerView ;
     SQLiteDatabase mDB;
     FavouritesAdapter adapter;
+    Cursor cursor;
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_favourites);
         recyclerView = findViewById(R.id.favourites_rv);
         setRecyclerView(recyclerView);
-        FavouritesDBHelper dbHelper = new FavouritesDBHelper(this);
-        mDB =dbHelper.getReadableDatabase();
-        Cursor cursor = getAllFavourites();
-        adapter=new FavouritesAdapter(cursor);
-        recyclerView.setAdapter(adapter);
+        queryFavourites();
         new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0,ItemTouchHelper.LEFT|ItemTouchHelper.RIGHT) {
 
             @Override
@@ -41,29 +53,45 @@ public class Favourites extends AppCompatActivity {
             public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
                long movieId = (long) viewHolder.itemView.getTag();
                deleteFavourite(movieId);
-               adapter.swapCursor(getAllFavourites());
+               queryFavourites();
             }
         }).attachToRecyclerView(recyclerView);
-
-
     }
     private void setRecyclerView (RecyclerView recyclerView){
         LinearLayoutManager layoutManager = new LinearLayoutManager(this,VERTICAL,true);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setHasFixedSize(true);
     }
-    private Cursor getAllFavourites () {
-        return mDB.query(FavouritesContract.FavouritesEntry.TABLE_NAME,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null);
+    private void deleteFavourite(long movieId){
+        String id = Long.toString(movieId);
+        Uri uri = FavouritesContract.FavouritesEntry.CONTENT_URI;
+        uri= uri.buildUpon().appendPath(id).build();
+        getContentResolver().delete(uri,null,null);
     }
-    private boolean deleteFavourite(long movieId){
-       return mDB.delete(FavouritesContract.FavouritesEntry.TABLE_NAME,
-                FavouritesContract.FavouritesEntry.COLUMN_MOVIE_ID+ "=" +movieId,null) >0;
+    private void queryFavourites(){
+        Uri querySearch = FavouritesContract.FavouritesEntry.CONTENT_URI;
+        new FavouritesQueryAsyncTask(this, new FetchData()).execute(querySearch);
     }
+   public class FetchData implements AsyncTaskCompleteListener{
 
+       @Override
+       public void onMovieJsonTaskComplete(List<MovieModel> movies) {}
+
+       @Override
+       public void onTrailerJsonTaskComplete(List<TrailerModel> trailers) {}
+
+       @Override
+       public void onReviewsJsonTaskComplete(List<ReviewsModel> reviews) {}
+
+       @Override
+       public void onFavouritesTaskComplete(Cursor cursor) {
+           adapter= new FavouritesAdapter(cursor);
+           recyclerView.setAdapter(adapter);
+       }
+
+       @Override
+       public void errorMessage(String errorMessage) {
+
+       }
+   }
 }

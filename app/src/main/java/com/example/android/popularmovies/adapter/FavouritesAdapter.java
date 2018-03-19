@@ -1,5 +1,6 @@
 package com.example.android.popularmovies.adapter;
 
+import android.content.Context;
 import android.database.Cursor;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -21,9 +22,13 @@ public class FavouritesAdapter extends RecyclerView.Adapter<FavouritesAdapter.Fa
 
     Cursor cursor;
     int position;
+    Context context;
 
     public FavouritesAdapter(Cursor cursor){
         this.cursor =cursor;
+    }
+    public FavouritesAdapter(Context context){
+        this.context=context;
     }
 
     @Override
@@ -44,14 +49,6 @@ public class FavouritesAdapter extends RecyclerView.Adapter<FavouritesAdapter.Fa
        }
     }
 
-    public void swapCursor (Cursor newCursor){
-       if(cursor!=null)cursor.close();
-           cursor=newCursor;
-       if (newCursor!=null){
-           this.notifyDataSetChanged();
-           this.notifyItemChanged(this.position);
-       }
-    }
 
     @Override
     public int getItemCount() {

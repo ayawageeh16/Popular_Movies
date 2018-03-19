@@ -1,6 +1,7 @@
 package com.example.android.popularmovies.view;
 
 import android.content.Intent;
+import android.database.Cursor;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.support.annotation.NonNull;
@@ -150,6 +151,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         public void onTrailerJsonTaskComplete(List<TrailerModel> trailers) {}
         @Override
         public void onReviewsJsonTaskComplete(List<ReviewsModel> reviews) {}
+
+        @Override
+        public void onFavouritesTaskComplete(Cursor cursor) {
+
+        }
+
         @Override
         public void errorMessage(String errorMessage) {
             errorMessageDisplay=errorMessage;
