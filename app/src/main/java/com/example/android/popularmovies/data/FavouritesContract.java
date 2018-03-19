@@ -3,6 +3,8 @@ package com.example.android.popularmovies.data;
 import android.net.Uri;
 import android.provider.BaseColumns;
 
+import java.security.PublicKey;
+
 /**
  * Created by Lenovo on 12/03/2018.
  */

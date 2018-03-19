@@ -88,7 +88,6 @@ public class Favourites extends AppCompatActivity {
            adapter= new FavouritesAdapter(cursor);
            recyclerView.setAdapter(adapter);
        }
-
        @Override
        public void errorMessage(String errorMessage) {
 

@@ -158,8 +158,6 @@ public class MovieDetails extends AppCompatActivity {
         values.put(FavouritesContract.FavouritesEntry.COLUMN_MOVIE_RATE, movie.rate);
         values.put(FavouritesContract.FavouritesEntry.COLUMN_MOVIE_POSTER, movie.poster);
         values.put(FavouritesContract.FavouritesEntry.COLUMN_MOVIE_COVER, movie.cover);
-        /*mDB.insert(FavouritesContract.FavouritesEntry.TABLE_NAME,null, values);
-        mDB.close();*/
         Uri uri= getContentResolver().insert(FavouritesContract.FavouritesEntry.CONTENT_URI,values);
         if (uri !=null){
             Toast.makeText(this,uri.toString(),Toast.LENGTH_LONG).show();
