@@ -82,15 +82,18 @@
                  android:layout_width="wrap_content"
                  android:layout_height="wrap_content"
                  android:text="@string/add_favourite"
+                 android:layout_marginTop="7dp"
+                 android:layout_marginEnd="4dp"
                  android:textColor="@color/colorAccent"/>
+
              <ImageButton
-                 android:layout_width="50dp"
-                 android:layout_height="50dp"
                  android:id="@+id/favourite_btn"
+                 android:layout_width="35dp"
+                 android:layout_height="35dp"
+                 android:background="@color/colorPrimary"
                  android:onClick="addToFavourites"
-                 android:src="@drawable/fav"
-                 android:scaleType="fitXY"
-                 />
+                 android:scaleType="fitCenter"
+                 android:src="@drawable/fav" />
          </LinearLayout>
 
         </LinearLayout>
@@ -151,7 +154,7 @@
             android:textColor="@color/colorAccent"
             android:id="@+id/trailer"
             android:text="@string/trailer_tv"
-            android:textSize="20sp"
+            android:textSize="24sp"
             app:layout_constraintBottom_toTopOf="@+id/trailers_rv"
             />
 
@@ -200,7 +203,7 @@
             android:textColor="@color/colorAccent"
             android:id="@+id/reviews"
             android:text="@string/reviews_tv"
-            android:textSize="20sp"
+            android:textSize="24sp"
             android:layout_marginBottom="2dp"
             app:layout_constraintBottom_toTopOf="@+id/trailers_rv"
             />
