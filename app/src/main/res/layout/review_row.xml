@@ -9,11 +9,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/author_tv"
-        android:background="#ffffff"/>
+        android:layout_marginTop="2dp"
+        android:textColor="@color/main_color_text"/>
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="#ffff"
+        android:background="@color/colorPrimaryDark"
         android:layout_marginTop="20dp"
         />
     <TextView
@@ -23,7 +24,7 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="#000000"
+        android:background="@color/colorPrimaryDark"
         android:layout_marginTop="20dp"
         />
 </LinearLayout>
