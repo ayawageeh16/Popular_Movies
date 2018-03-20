@@ -53,7 +53,7 @@ public class MovieDetails extends AppCompatActivity {
     ImageButton favouriteButton;
     MovieModel movie;
     String errorMessageDisplay;
-    List<TrailerModel> trailerslist = new ArrayList<>();
+    List<TrailerModel> trailersList = new ArrayList<>();
     List<ReviewsModel> reviewsList = new ArrayList<>();
     SQLiteDatabase mDB ;
 
@@ -160,7 +160,7 @@ public class MovieDetails extends AppCompatActivity {
         values.put(FavouritesContract.FavouritesEntry.COLUMN_MOVIE_COVER, movie.cover);
         Uri uri= getContentResolver().insert(FavouritesContract.FavouritesEntry.CONTENT_URI,values);
         if (uri !=null){
-            Toast.makeText(this,uri.toString(),Toast.LENGTH_LONG).show();
+            Toast.makeText(this,movie.title+" added to your favourites successfully!",Toast.LENGTH_LONG).show();
         }
         else {
             Toast.makeText(this,"failed",Toast.LENGTH_LONG).show();
@@ -173,8 +173,8 @@ public class MovieDetails extends AppCompatActivity {
         public void onMovieJsonTaskComplete(List<MovieModel> movies) {}
         @Override
         public void onTrailerJsonTaskComplete(List<TrailerModel> trailers) {
-            trailerslist =trailers;
-          TrailerAdapter adapter= new TrailerAdapter(trailerslist, new TrailerAdapter.OnItemClickedListerner() {
+            trailersList =trailers;
+          TrailerAdapter adapter= new TrailerAdapter(trailersList, new TrailerAdapter.OnItemClickedListerner() {
                 @Override
                 public void onItemClicked(TrailerModel trailer) {
                     Intent intent = new Intent(Intent.ACTION_VIEW);
