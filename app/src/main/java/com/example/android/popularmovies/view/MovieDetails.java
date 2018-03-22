@@ -158,6 +158,7 @@ public class MovieDetails extends AppCompatActivity {
         values.put(FavouritesContract.FavouritesEntry.COLUMN_MOVIE_RATE, movie.rate);
         values.put(FavouritesContract.FavouritesEntry.COLUMN_MOVIE_POSTER, movie.poster);
         values.put(FavouritesContract.FavouritesEntry.COLUMN_MOVIE_COVER, movie.cover);
+
         Uri uri= getContentResolver().insert(FavouritesContract.FavouritesEntry.CONTENT_URI,values);
         if (uri !=null){
             Toast.makeText(this,movie.title+" added to your favourites successfully!",Toast.LENGTH_LONG).show();
@@ -167,7 +168,9 @@ public class MovieDetails extends AppCompatActivity {
         }
 
     }
+    private void CheckIfExists (Long id){
 
+    }
     public class FetchData implements AsyncTaskCompleteListener{
         @Override
         public void onMovieJsonTaskComplete(List<MovieModel> movies) {}

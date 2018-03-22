@@ -74,8 +74,7 @@ public class NetworkUtils {
                 String poster = IMAGE_BASE_URL + IMAGE_SIZE + movie.getString("poster_path");
                 Double rate_double = movie.getDouble("vote_average");
                 String rate = "Rate: " + String.valueOf(rate_double);
-                String description = "Overview: " + "\n" +
-                        movie.getString("overview");
+                String description = movie.getString("overview");
                 String cover = IMAGE_BASE_URL + COVER_SIZE + movie.getString("backdrop_path");
                 long id = movie.getLong("id");
                // MovieModel movieModelobject = new MovieModel(title, year, rate, description, poster, cover, id);

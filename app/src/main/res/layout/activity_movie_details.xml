@@ -12,7 +12,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:id="@+id/constraintlayout"
+    android:id="@+id/linearLayout"
     >
 
     <ImageView
@@ -27,6 +27,7 @@
         android:id="@+id/linearLayout2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        app:layout_constraintBottom_toTopOf="@id/img_cover"
         android:padding="2dp">
 
         <ImageView
@@ -39,9 +40,6 @@
             android:layout_marginTop="40dp"
             android:contentDescription="@string/movie_poster"
             android:scaleType="fitXY"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/img_cover"
             app:srcCompat="@mipmap/ic_launcher" />
 
         <LinearLayout
@@ -51,40 +49,41 @@
             android:padding="5dp">
 
             <TextView
+                tools:text="Movie title"
                 android:id="@+id/tv_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="top"
                 android:layout_marginTop="16dp"
-                android:textSize="25sp"
-               android:textColor="@color/main_color_text" />
-
-            <TextView
-                android:id="@+id/tv_year"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:textSize="20sp"
-                android:textColor="@color/main_color_text"
+                android:textStyle="bold"
+                android:textSize="30sp"
+                android:textColor="@color/colorAccent"
                 />
 
             <TextView
+                tools:text="released year"
+                android:id="@+id/tv_year"
+                android:layout_marginTop="8dp"
+                android:textSize="20sp"
+                style="@style/MovieDetails"
+                />
+
+            <TextView
+                tools:text="Movie rate"
                 android:id="@+id/tv_rate"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
                 android:textSize="15sp"
-                android:textColor="@color/main_color_text"/>
+                style="@style/MovieDetails"
+                />
          <LinearLayout
              android:layout_width="wrap_content"
              android:layout_height="wrap_content"
              android:orientation="horizontal">
              <TextView
-                 android:layout_width="wrap_content"
-                 android:layout_height="wrap_content"
                  android:text="@string/add_favourite"
                  android:layout_marginTop="7dp"
                  android:layout_marginEnd="4dp"
-                 android:textColor="@color/colorAccent"/>
+                 style="@style/MovieDetails"
+                />
 
              <ImageButton
                  android:id="@+id/favourite_btn"
@@ -93,74 +92,52 @@
                  android:background="@color/colorPrimary"
                  android:onClick="addToFavourites"
                  android:scaleType="fitCenter"
-                 android:src="@drawable/fav" />
+                 android:src="@drawable/ic_favourite_icon" />
          </LinearLayout>
 
         </LinearLayout>
     </LinearLayout>
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="2dp"
-        android:background="@color/colorAccent"
-        android:id="@+id/overview_top_view"
-        app:layout_constraintBottom_toBottomOf="@id/linearLayout2"
-        app:layout_constraintBottom_toTopOf="@id/tv_overview"
-        />
+     <TextView
+         android:id="@+id/overview_Label_tv"
+         android:text="@string/overview_label"
+         style="@style/LabelsStyle" />
 
     <TextView
         android:id="@+id/tv_overview"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="15dp"
         android:layout_marginBottom="15dp"
-        android:textColor="@color/main_color_text"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout2"
+        style="@style/MovieDetails"
         />
 
        <View
-        android:layout_width="match_parent"
-        android:layout_height="2dp"
-        android:background="@color/colorAccent"
+           style="@style/ViewStyle"
            android:layout_marginTop="20dp"
            android:id="@+id/overview_down_view"
-        app:layout_constraintBottom_toBottomOf="@id/tv_overview"
-           app:layout_constraintBottom_toTopOf="@id/linearlayout4"
         />
 
         <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
         tools:layout_editor_absoluteY="440dp"
         android:layout_margin="5dp"
         android:orientation="vertical"
         android:id="@+id/linearlayout4"
-        app:layout_constraintBottom_toBottomOf="@id/overview_down_view"
-        app:layout_constraintBottom_toTopOf="@+id/constraintlayout"
         >
 
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
             android:gravity="start"
-            android:textColor="@color/colorAccent"
             android:id="@+id/trailer"
             android:text="@string/trailer_tv"
-            android:textSize="24sp"
-            app:layout_constraintBottom_toTopOf="@+id/trailers_rv"
+            style="@style/LabelsStyle"
             />
 
      <android.support.v7.widget.RecyclerView
          android:layout_width="match_parent"
          android:layout_height="wrap_content"
+         android:layout_marginTop="10dp"
          android:id="@+id/trailers_rv"
          android:visibility="visible" >
 
@@ -174,38 +151,25 @@
     </LinearLayout>
 
     <View
-        android:layout_width="match_parent"
-        android:layout_height="2dp"
-        android:background="@color/colorAccent"
+        style="@style/ViewStyle"
         android:layout_marginTop="20dp"
         android:id="@+id/trailers_down_view"
-        app:layout_constraintBottom_toBottomOf="@id/tv_overview"
-        app:layout_constraintBottom_toTopOf="@id/linearlayout4"
         />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
         tools:layout_editor_absoluteY="440dp"
         android:layout_margin="5dp"
         android:orientation="vertical"
         android:id="@+id/linearlayout5"
-        app:layout_constraintBottom_toBottomOf="@id/overview_down_view"
-        app:layout_constraintBottom_toTopOf="@+id/constraintlayout"
         >
 
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
             android:gravity="start"
-            android:textColor="@color/colorAccent"
             android:id="@+id/reviews"
             android:text="@string/reviews_tv"
-            android:textSize="24sp"
-            android:layout_marginBottom="2dp"
-            app:layout_constraintBottom_toTopOf="@+id/trailers_rv"
+            style="@style/LabelsStyle"
             />
 
         <android.support.v7.widget.RecyclerView
