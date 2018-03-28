@@ -7,6 +7,8 @@ import android.database.sqlite.SQLiteDatabase;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
+import android.os.Parcelable;
+import android.os.PersistableBundle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -14,6 +16,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -40,6 +43,7 @@ import static android.support.v7.widget.LinearLayoutManager.VERTICAL;
 
 public class MovieDetails extends AppCompatActivity {
 
+    ScrollView scrollView;
     ImageView coverImg;
     ImageView posterImg;
     TextView movieTitle;
@@ -56,11 +60,15 @@ public class MovieDetails extends AppCompatActivity {
     List<TrailerModel> trailersList = new ArrayList<>();
     List<ReviewsModel> reviewsList = new ArrayList<>();
     SQLiteDatabase mDB ;
+    Parcelable mListState ;
+    LinearLayoutManager reviewLayoutManager;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_movie_details);
+        scrollView = findViewById(R.id.mScrollView);
         movieTitle =findViewById(R.id.tv_title);
         coverImg = findViewById(R.id.img_cover);
         posterImg = findViewById(R.id.img_pos);
@@ -102,6 +110,21 @@ public class MovieDetails extends AppCompatActivity {
         } catch (MalformedURLException e) {
             e.printStackTrace();
         }
+
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        mListState = reviewLayoutManager.onSaveInstanceState();
+        outState.putParcelable("LIST_STATE_KEY", mListState);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        if(savedInstanceState != null)
+            mListState = savedInstanceState.getParcelable("LIST_STATE_KEY");
     }
 
     void setTrailersRecyclerView (RecyclerView recyclerView){
@@ -110,8 +133,9 @@ public class MovieDetails extends AppCompatActivity {
         recyclerView.setHasFixedSize(true);
     }
     void setReviewsRecyclerView (RecyclerView recyclerView){
-        LinearLayoutManager layoutManager = new LinearLayoutManager(this,VERTICAL,true);
-        recyclerView.setLayoutManager(layoutManager);
+        reviewLayoutManager = new LinearLayoutManager(this,VERTICAL,true);
+        reviewLayoutManager.onRestoreInstanceState(mListState);
+        recyclerView.setLayoutManager(reviewLayoutManager);
         recyclerView.setHasFixedSize(true);
     }
 
@@ -159,18 +183,41 @@ public class MovieDetails extends AppCompatActivity {
         values.put(FavouritesContract.FavouritesEntry.COLUMN_MOVIE_POSTER, movie.poster);
         values.put(FavouritesContract.FavouritesEntry.COLUMN_MOVIE_COVER, movie.cover);
 
-        Uri uri= getContentResolver().insert(FavouritesContract.FavouritesEntry.CONTENT_URI,values);
-        if (uri !=null){
-            Toast.makeText(this,movie.title+" added to your favourites successfully!",Toast.LENGTH_LONG).show();
+        boolean check = checkIfExists(movie.id);
+        if (check == true) {
+            Toast.makeText(this, "movie already in your favourites", Toast.LENGTH_LONG).show();
+        } else {
+            Uri uri = getContentResolver().insert(FavouritesContract.FavouritesEntry.CONTENT_URI, values);
+            if (uri != null) {
+                Toast.makeText(this, movie.title + " added to your favourites successfully!", Toast.LENGTH_LONG).show();
+            } else {
+                Toast.makeText(this, "failed", Toast.LENGTH_LONG).show();
+            }
         }
-        else {
-            Toast.makeText(this,"failed",Toast.LENGTH_LONG).show();
+    }
+
+    private boolean checkIfExists (Long movieId){
+        String id = String.valueOf(movieId);
+        Uri queryUri = FavouritesContract.FavouritesEntry.CONTENT_URI.buildUpon().appendPath(id).build();
+        Cursor cursor = getContentResolver().query(queryUri,
+                null,
+                null,
+                null,
+                null);
+        if (cursor != null){
+            while (cursor.moveToNext()) {
+                int returnedId = cursor.getInt(cursor.getColumnIndex(FavouritesContract.FavouritesEntry.COLUMN_MOVIE_ID));
+                if (movieId ==returnedId) {
+                    cursor.close();
+                    return true;
+                }
+            }
         }
-
+       return  false;
     }
-    private void CheckIfExists (Long id){
 
-    }
+
+
     public class FetchData implements AsyncTaskCompleteListener{
         @Override
         public void onMovieJsonTaskComplete(List<MovieModel> movies) {}

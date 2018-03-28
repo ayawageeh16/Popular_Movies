@@ -54,6 +54,18 @@ public class FavouritesContentProvider extends ContentProvider {
                            null,
                            null);
                  break;
+             case MOVIE_WITH_ID :
+                 String id = uri.getPathSegments().get(1);
+                 String mSelection = "id=?";
+                 String[] mSelectionArgs = new String[]{id};
+                 returnCursor =db.query(FavouritesContract.FavouritesEntry.TABLE_NAME,
+                         null,
+                          mSelection,
+                          mSelectionArgs,
+                         null,
+                         null,
+                         null );
+                 break;
              default:
                  throw  new UnsupportedOperationException("unknown uri"+uri);
          }
@@ -75,10 +87,11 @@ public class FavouritesContentProvider extends ContentProvider {
         Uri returnUri ;
         switch (match) {
             case FAVOURITES:
-                long id = db.insert(FavouritesContract.FavouritesEntry.TABLE_NAME, null, contentValues);
-                if (id > 0) {
-                   returnUri = ContentUris.withAppendedId(FavouritesContract.FavouritesEntry.CONTENT_URI, id);
-                   }else{throw new SQLException("failed to insert new row into"+uri);}
+                    long id = db.insert(FavouritesContract.FavouritesEntry.TABLE_NAME, null, contentValues);
+                    if (id > 0) {
+                        returnUri = ContentUris.withAppendedId(FavouritesContract.FavouritesEntry.CONTENT_URI, id);
+                    } else {
+                        throw new SQLException("failed to insert new row into" + uri);}
                 break;
             default:
                 throw new UnsupportedOperationException("unknown Uri"+uri);
