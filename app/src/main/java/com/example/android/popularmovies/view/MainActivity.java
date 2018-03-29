@@ -149,8 +149,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             recyclerView.setAdapter(adapter);}
         @Override
         public void onTrailerJsonTaskComplete(List<TrailerModel> trailers) {}
-        @Override
-        public void onReviewsJsonTaskComplete(List<ReviewsModel> reviews) {}
+
 
         @Override
         public void onFavouritesTaskComplete(Cursor cursor) {

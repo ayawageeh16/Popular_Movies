@@ -1,8 +1,11 @@
 package com.example.android.popularmovies.utils;
 
+import android.content.Context;
 import android.net.Uri;
 import android.text.TextUtils;
 
+import com.example.android.popularmovies.BuildConfig;
+import com.example.android.popularmovies.R;
 import com.example.android.popularmovies.data.MovieModel;
 import com.example.android.popularmovies.data.ReviewsModel;
 import com.example.android.popularmovies.data.TrailerModel;
@@ -35,7 +38,7 @@ public class NetworkUtils {
     //build URL
     public static URL buildURL(String sortBy) throws MalformedURLException {
         Uri builtURI = Uri.parse(MOVIE_BASE_URL + sortBy).buildUpon()
-                .appendQueryParameter("api_key", "074d499d5f8f7cfc23a16f8d4936f80c")
+                .appendQueryParameter("api_key",BuildConfig.THE_MOVIE_DB_API_TOKEN)
                 .build();
         URL url = new URL(builtURI.toString());
         return url;

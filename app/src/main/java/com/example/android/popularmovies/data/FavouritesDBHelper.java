@@ -25,8 +25,9 @@ public class FavouritesDBHelper extends SQLiteOpenHelper {
                                                  + FavouritesContract.FavouritesEntry.COLUMN_MOVIE_RATE +" TEXT,"
                                                  + FavouritesContract.FavouritesEntry.COLUMN_MOVIE_POSTER +" TEXT,"
                                                  + FavouritesContract.FavouritesEntry.COLUMN_MOVIE_COVER +" TEXT,"
-                                                 + FavouritesContract.FavouritesEntry.COLUMN_MOVIE_OVERVIEW +" TEXT"
-                                                 +");";
+                                                 + FavouritesContract.FavouritesEntry.COLUMN_MOVIE_OVERVIEW +" TEXT,"
+                                                 +"UNIQUE"+" ("+ FavouritesContract.FavouritesEntry.COLUMN_MOVIE_ID + ") "
+                                                 + "ON CONFLICT REPLACE" +");";
         sqLiteDatabase.execSQL(SQL_CREATE_FAVOURITES_TABLE);
     }
 

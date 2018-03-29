@@ -8,7 +8,7 @@
     <string name="trailer_tv">Trailers:</string>
     <string name="movie_cover">movie cover photo</string>
     <string name="trailer">Trailer</string>
-
+    <string name="THE_MOVIE_DB_API_TOKEN">074d499d5f8f7cfc23a16f8d4936f80c</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
@@ -24,4 +24,6 @@
     <string name="overview_label">Overview</string>
     <string name="movie_year">released year</string>
     <string name="movie_rate">movie rate</string>
+    <string name="trailer_error_tv">No internet connection</string>
+    <string name="reviews_error_tv">No internet Connection</string>
 </resources>

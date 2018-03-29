@@ -50,8 +50,8 @@ public class ReviewsAdapter extends RecyclerView.Adapter<ReviewsAdapter.ReviewsV
            author_tv =itemView.findViewById(R.id.author_tv);
         }
        public void bind (final ReviewsModel review){
-                author_tv.setText(review.author);
-                content_tv.setText(review.content);
+                    author_tv.setText(review.author);
+                    content_tv.setText(review.content);
         }
     }
 }

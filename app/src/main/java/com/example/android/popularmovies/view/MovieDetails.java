@@ -8,7 +8,6 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Parcelable;
-import android.os.PersistableBundle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -30,7 +29,7 @@ import com.example.android.popularmovies.data.ReviewsModel;
 import com.example.android.popularmovies.data.TrailerModel;
 import com.example.android.popularmovies.utils.AsyncTaskCompleteListener;
 import com.example.android.popularmovies.utils.NetworkUtils;
-import com.example.android.popularmovies.utils.ReviewsJsonAsyncTask;
+import com.example.android.popularmovies.utils.ReviewsLoader;
 import com.example.android.popularmovies.utils.TrailerJsonAsyncTask;
 import com.squareup.picasso.Picasso;
 
@@ -53,15 +52,15 @@ public class MovieDetails extends AppCompatActivity {
     TextView movieOverview;
     TextView trailersErrorMessageTv;
     TextView reviewsErrorMeassageTv;
-    RecyclerView trailerRecyclerView ;
+    RecyclerView trailerRecyclerView;
     RecyclerView reviewRecyclerView;
     ImageButton favouriteButton;
     MovieModel movie;
     String errorMessageDisplay;
     List<TrailerModel> trailersList = new ArrayList<>();
     List<ReviewsModel> reviewsList = new ArrayList<>();
-    SQLiteDatabase mDB ;
-    Parcelable mListState ;
+    SQLiteDatabase mDB;
+    Parcelable mListState;
     LinearLayoutManager reviewLayoutManager;
 
 
@@ -70,17 +69,17 @@ public class MovieDetails extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_movie_details);
         scrollView = findViewById(R.id.mScrollView);
-        movieTitle =findViewById(R.id.tv_title);
+        movieTitle = findViewById(R.id.tv_title);
         coverImg = findViewById(R.id.img_cover);
         posterImg = findViewById(R.id.img_pos);
         movieYear = findViewById(R.id.tv_year);
         movieRate = findViewById(R.id.tv_rate);
-        movieOverview =findViewById(R.id.tv_overview);
-        favouriteButton=findViewById(R.id.favourite_btn);
-        trailersErrorMessageTv =findViewById(R.id.trailer_error_tv);
+        movieOverview = findViewById(R.id.tv_overview);
+        favouriteButton = findViewById(R.id.favourite_btn);
+        trailersErrorMessageTv = findViewById(R.id.trailer_error_tv);
         reviewsErrorMeassageTv = findViewById(R.id.reviews_error_tv);
-        trailerRecyclerView =findViewById(R.id.trailers_rv);
-        reviewRecyclerView =findViewById(R.id.reviews_rv);
+        trailerRecyclerView = findViewById(R.id.trailers_rv);
+        reviewRecyclerView = findViewById(R.id.reviews_rv);
         setTrailersRecyclerView(trailerRecyclerView);
         setReviewsRecyclerView(reviewRecyclerView);
         FavouritesDBHelper dbHelper = new FavouritesDBHelper(this);
@@ -99,25 +98,27 @@ public class MovieDetails extends AppCompatActivity {
         movieYear.setText(movie.releaseDate);
         movieRate.setText(movie.rate);
         movieOverview.setText(movie.overview);
-       boolean check = checkIfExists(movie.id);
-       if (check == true){
-           favouriteButton.setImageResource(R.drawable.ic_filledheart);
-       }
-       else {
-           favouriteButton.setImageResource(R.drawable.ic_heart);
-       }
-
+        boolean check = checkIfExists(movie.id);
+        if (check == true) {
+            favouriteButton.setImageResource(R.drawable.ic_filledheart);
+        } else {
+            favouriteButton.setImageResource(R.drawable.ic_heart);
+        }
+        boolean networkCheck= isConnected();
+        if (networkCheck == true){
         try {
             trailersSearchQueryExecute();
         } catch (MalformedURLException e) {
-            e.printStackTrace();
-        }
-        try {
-            reviewsSearchQueryExecute();
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        }
+            e.printStackTrace();}
 
+         Bundle b = new Bundle();
+         b.putInt("movie id", (int) movie.id);
+         getLoaderManager().initLoader(0, b ,loaderCallbacks);
+        }
+        else {
+            showReviewErrorMessage();
+            showTrailerErrorMessage();
+        }
     }
 
     @Override
@@ -130,54 +131,47 @@ public class MovieDetails extends AppCompatActivity {
     @Override
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
-        if(savedInstanceState != null)
+        if (savedInstanceState != null)
             mListState = savedInstanceState.getParcelable("LIST_STATE_KEY");
     }
 
-    void setTrailersRecyclerView (RecyclerView recyclerView){
-        LinearLayoutManager layoutManager = new LinearLayoutManager(this,VERTICAL,true);
+    void setTrailersRecyclerView(RecyclerView recyclerView) {
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this, HORIZONTAL, true);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setHasFixedSize(true);
     }
-    void setReviewsRecyclerView (RecyclerView recyclerView){
-        reviewLayoutManager = new LinearLayoutManager(this,VERTICAL,true);
+
+    void setReviewsRecyclerView(RecyclerView recyclerView) {
+        reviewLayoutManager = new LinearLayoutManager(this, VERTICAL, true);
         reviewLayoutManager.onRestoreInstanceState(mListState);
         recyclerView.setLayoutManager(reviewLayoutManager);
         recyclerView.setHasFixedSize(true);
     }
 
-    public void trailersSearchQueryExecute () throws MalformedURLException {
+    public void trailersSearchQueryExecute() throws MalformedURLException {
         if (isConnected()) {
             //call JSON Async task
-            URL trailerSearchQuery = NetworkUtils.buildURL(String.valueOf(movie.id)+"/"+ "videos");
+            URL trailerSearchQuery = NetworkUtils.buildURL(String.valueOf(movie.id) + "/" + "videos");
             new TrailerJsonAsyncTask(this, new FetchData()).execute(trailerSearchQuery);
         } else {
             showTrailerErrorMessage();
         }
     }
-    public  void reviewsSearchQueryExecute () throws MalformedURLException{
-        if (isConnected()){
-            URL reviewSearchQuery = NetworkUtils.buildURL(String.valueOf(movie.id)+"/"+"reviews");
-            new ReviewsJsonAsyncTask(this,new FetchData()).execute(reviewSearchQuery);
-        } else {
-            showReviewErrorMessage();
-        }
-    }
-    private Boolean isConnected (){
+
+    private Boolean isConnected() {
         ConnectivityManager connectivityManager = (ConnectivityManager) this.getSystemService(this.CONNECTIVITY_SERVICE);
         NetworkInfo activeNetwork = connectivityManager.getActiveNetworkInfo();
-        Boolean isConnected = activeNetwork !=null&& activeNetwork.isConnectedOrConnecting();
+        Boolean isConnected = activeNetwork != null && activeNetwork.isConnectedOrConnecting();
         return isConnected;
     }
-    public void showTrailerErrorMessage (){
-        trailersErrorMessageTv.setVisibility(View.VISIBLE);
+
+    public void showTrailerErrorMessage() {
         trailerRecyclerView.setVisibility(View.INVISIBLE);
-        trailersErrorMessageTv.setText(errorMessageDisplay);
+        trailersErrorMessageTv.setVisibility(View.VISIBLE);
     }
-    public void showReviewErrorMessage (){
+    public void showReviewErrorMessage() {
         reviewsErrorMeassageTv.setVisibility(View.VISIBLE);
         reviewRecyclerView.setVisibility(View.INVISIBLE);
-        reviewsErrorMeassageTv.setText(errorMessageDisplay);
     }
 
     public void addToFavourites(View view) {
@@ -192,20 +186,26 @@ public class MovieDetails extends AppCompatActivity {
 
         boolean check = checkIfExists(movie.id);
         if (check == true) {
-            Toast.makeText(this, "movie already in your favourites", Toast.LENGTH_LONG).show();
+            deleteFavourite(movie.id);
+            favouriteButton.setImageResource(R.drawable.ic_heart);
+            Toast.makeText(this, "removed from your favourites", Toast.LENGTH_LONG).show();
         } else {
             Uri uri = getContentResolver().insert(FavouritesContract.FavouritesEntry.CONTENT_URI, values);
             if (uri != null) {
                 favouriteButton.setImageResource(R.drawable.ic_filledheart);
-                Toast.makeText(this, movie.title + " added to your favourites successfully!", Toast.LENGTH_LONG).show();
+                Toast.makeText(this, movie.title + " is added to your favourites", Toast.LENGTH_LONG).show();
             } else {
                 Toast.makeText(this, "failed", Toast.LENGTH_LONG).show();
-            }
-        }
+            }}}
 
+    private void deleteFavourite(long movieId) {
+        String id = Long.toString(movieId);
+        Uri uri = FavouritesContract.FavouritesEntry.CONTENT_URI;
+        uri = uri.buildUpon().appendPath(id).build();
+        getContentResolver().delete(uri, null, null);
     }
 
-    private boolean checkIfExists (Long movieId){
+    private boolean checkIfExists(Long movieId) {
         String id = String.valueOf(movieId);
         Uri queryUri = FavouritesContract.FavouritesEntry.CONTENT_URI.buildUpon().appendPath(id).build();
         Cursor cursor = getContentResolver().query(queryUri,
@@ -213,17 +213,30 @@ public class MovieDetails extends AppCompatActivity {
                 null,
                 null,
                 null);
-        if (cursor != null){
+        if (cursor != null) {
             while (cursor.moveToNext()) {
                 int returnedId = cursor.getInt(cursor.getColumnIndex(FavouritesContract.FavouritesEntry.COLUMN_MOVIE_ID));
-                if (movieId ==returnedId) {
+                if (movieId == returnedId) {
                     cursor.close();
                     return true;
-                }
-            }
-        }
-       return  false;
+                }}}
+        return false;
     }
+
+    private android.app.LoaderManager.LoaderCallbacks<List<ReviewsModel>> loaderCallbacks = new android.app.LoaderManager.LoaderCallbacks<List<ReviewsModel>>() {
+        @Override
+        public android.content.Loader<List<ReviewsModel>> onCreateLoader(int i, Bundle bundle) {
+            return new ReviewsLoader(getApplicationContext(), bundle.getInt("movie id"));
+        }
+        @Override
+        public void onLoadFinished(android.content.Loader<List<ReviewsModel>> loader, List<ReviewsModel> reviewsModels) {
+                reviewsList =reviewsModels;
+                ReviewsAdapter adapter = new ReviewsAdapter(reviewsList);
+                reviewRecyclerView.setAdapter(adapter);
+        }
+        @Override
+        public void onLoaderReset(android.content.Loader<List<ReviewsModel>> loader) {}
+    };
 
     public class FetchData implements AsyncTaskCompleteListener{
         @Override
@@ -236,21 +249,12 @@ public class MovieDetails extends AppCompatActivity {
                 public void onItemClicked(TrailerModel trailer) {
                     Intent intent = new Intent(Intent.ACTION_VIEW);
                     intent.setData(Uri.parse("https://www.youtube.com/watch?v="+trailer.key));
-                    startActivity(intent);
-                     }
+                    startActivity(intent);}
             });
             trailerRecyclerView.setAdapter(adapter);
         }
         @Override
-        public void onReviewsJsonTaskComplete(List<ReviewsModel> reviews) {
-            reviewsList =reviews;
-            ReviewsAdapter adapter = new ReviewsAdapter(reviewsList);
-            reviewRecyclerView.setAdapter(adapter);
-        }
-
-        @Override
         public void onFavouritesTaskComplete(Cursor cursor) {}
-
         @Override
         public void errorMessage(String errorMessage) {
             errorMessageDisplay =errorMessage;

@@ -15,7 +15,6 @@ import java.util.List;
 public interface AsyncTaskCompleteListener{
     void onMovieJsonTaskComplete(List<MovieModel> movies);
     void onTrailerJsonTaskComplete(List<TrailerModel> trailers);
-    void onReviewsJsonTaskComplete(List<ReviewsModel> reviews);
     void onFavouritesTaskComplete(Cursor cursor);
     void errorMessage(String errorMessage);
 }

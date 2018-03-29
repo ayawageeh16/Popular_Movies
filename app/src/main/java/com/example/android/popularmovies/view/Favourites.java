@@ -84,8 +84,7 @@ public class Favourites extends AppCompatActivity {
        @Override
        public void onTrailerJsonTaskComplete(List<TrailerModel> trailers) {}
 
-       @Override
-       public void onReviewsJsonTaskComplete(List<ReviewsModel> reviews) {}
+
 
        @Override
        public void onFavouritesTaskComplete(Cursor cursor) {

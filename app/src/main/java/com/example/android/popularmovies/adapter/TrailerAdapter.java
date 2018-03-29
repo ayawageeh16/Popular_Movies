@@ -8,11 +8,14 @@ import android.view.ViewGroup;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.android.popularmovies.R;
 import com.example.android.popularmovies.data.TrailerModel;
+import com.squareup.picasso.Picasso;
 
+import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,7 +30,9 @@ public class TrailerAdapter extends RecyclerView.Adapter<TrailerAdapter.TrailerV
     public interface OnItemClickedListerner{
         void onItemClicked(TrailerModel trailer);
     }
-
+   public  TrailerAdapter(List <TrailerModel> trailers){
+       this.trailers =trailers;
+   }
     public TrailerAdapter (List<TrailerModel> trailers, OnItemClickedListerner listener){
         this.trailers =trailers;
         this.listener =listener;
@@ -35,7 +40,7 @@ public class TrailerAdapter extends RecyclerView.Adapter<TrailerAdapter.TrailerV
 
     @Override
     public TrailerViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View row = LayoutInflater.from(parent.getContext()).inflate(R.layout.trailer_row,parent,false);
+        View row = LayoutInflater.from(parent.getContext()).inflate(R.layout.youtube_video,parent,false);
         TrailerViewHolder holder = new TrailerViewHolder(row);
         return holder;
     }
@@ -51,22 +56,37 @@ public class TrailerAdapter extends RecyclerView.Adapter<TrailerAdapter.TrailerV
     }
 
     class TrailerViewHolder extends RecyclerView.ViewHolder{
-        ImageButton playButton;
-        TextView trailerTV;
+        //ImageButton playButton;
+        //TextView trailerTV;
+        ImageView ivYoutubeVideo;
+        ImageView ivPlay;
+
         public TrailerViewHolder(View itemView) {
             super(itemView);
-        playButton = itemView.findViewById(R.id.imgButton_play);
-        trailerTV = itemView.findViewById(R.id.tv_trailer);
+        //playButton = itemView.findViewById(R.id.imgButton_play);
+        //trailerTV = itemView.findViewById(R.id.tv_trailer);
+            ivYoutubeVideo = itemView.findViewById(R.id.img_thumnail);
+            ivPlay = itemView.findViewById(R.id.iv_play_pause);
+
         }
         public void bind(final TrailerModel trailer){
-          trailerTV.setText(trailer.name);
-          playButton.setOnClickListener(new View.OnClickListener(){
+          //trailerTV.setText(trailer.name);
+         /* playButton.setOnClickListener(new View.OnClickListener(){
                @Override
                public void onClick(View view) {
                    listener.onItemClicked(trailer);
                }
-           });
-
+           });*/
+            String img_url = "http://img.youtube.com/vi/" + trailer.key + "/0.jpg";
+            Picasso.with(ivYoutubeVideo.getContext())
+                    .load(img_url)
+                    .into(ivYoutubeVideo);
+            ivPlay.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    listener.onItemClicked(trailer);
+                }
+            });
 
         }
     }
