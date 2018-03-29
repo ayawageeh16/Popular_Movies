@@ -1,5 +1,6 @@
 package com.example.android.popularmovies.view;
 
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
@@ -14,6 +15,7 @@ import android.widget.TextView;
 
 import com.example.android.popularmovies.R;
 import com.example.android.popularmovies.adapter.FavouritesAdapter;
+import com.example.android.popularmovies.adapter.MovieAdapter;
 import com.example.android.popularmovies.data.FavouritesContract;
 import com.example.android.popularmovies.data.MovieModel;
 import com.example.android.popularmovies.data.ReviewsModel;
@@ -87,7 +89,14 @@ public class Favourites extends AppCompatActivity {
 
        @Override
        public void onFavouritesTaskComplete(Cursor cursor) {
-           adapter= new FavouritesAdapter(cursor);
+           adapter= new FavouritesAdapter(cursor, new FavouritesAdapter.OnItemClickedListener() {
+               @Override
+               public void onItemClicked(MovieModel movie) {
+                   Intent intent = new Intent(Favourites.this,MovieDetails.class);
+                   intent.putExtra("movie",movie);
+                   startActivity(intent);
+               }
+           });
            recyclerView.setAdapter(adapter);
        }
        @Override

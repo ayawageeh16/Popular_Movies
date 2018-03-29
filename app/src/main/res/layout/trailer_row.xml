@@ -12,8 +12,8 @@
         android:id="@+id/imgButton_play"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/ic_video_player"
-        android:background="@color/colorPrimary"
+        android:src="@drawable/ic_youtube"
+        android:background="@color/colorPrimaryDark"
         android:layout_marginEnd="5dp"
         />
     <TextView
@@ -21,7 +21,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/trailer"
-        android:textColor="@color/main_color_text"
+        android:textColor="@color/colorAccent"
         android:textAlignment="center"
         android:textIsSelectable="true"
         android:textSize="15sp"/>

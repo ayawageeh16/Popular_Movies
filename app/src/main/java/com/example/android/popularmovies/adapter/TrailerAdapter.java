@@ -1,9 +1,12 @@
 package com.example.android.popularmovies.adapter;
 
+import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebChromeClient;
+import android.webkit.WebView;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
@@ -56,13 +59,15 @@ public class TrailerAdapter extends RecyclerView.Adapter<TrailerAdapter.TrailerV
         trailerTV = itemView.findViewById(R.id.tv_trailer);
         }
         public void bind(final TrailerModel trailer){
-            trailerTV.setText(trailer.name);
-           playButton.setOnClickListener(new View.OnClickListener(){
+          trailerTV.setText(trailer.name);
+          playButton.setOnClickListener(new View.OnClickListener(){
                @Override
                public void onClick(View view) {
                    listener.onItemClicked(trailer);
                }
            });
+
+
         }
     }
 }

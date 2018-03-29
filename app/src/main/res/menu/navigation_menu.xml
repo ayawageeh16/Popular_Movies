@@ -4,14 +4,11 @@
     <item android:id="@+id/top_rated_sort_menu_item"
           android:title="@string/menu_item_top_rated"
           android:orderInCategory="1"/>
+
     <item android:id="@+id/popular_movies_sort_menu_item"
         android:title="@string/menu_item_popular_movies"
         android:orderInCategory="2"/>
     <item android:id="@+id/favourites_menu_item"
         android:title="@string/menu_item_favourites_movies"
         android:orderInCategory="2"/>
-    <item android:id="@+id/settings_menu_item"
-        android:title="@string/menu_item_settings"
-        android:orderInCategory="3"/>
-
 </menu>

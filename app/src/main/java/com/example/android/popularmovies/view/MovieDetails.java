@@ -39,6 +39,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
+import static android.support.v7.widget.LinearLayoutManager.HORIZONTAL;
 import static android.support.v7.widget.LinearLayoutManager.VERTICAL;
 
 public class MovieDetails extends AppCompatActivity {
@@ -98,7 +99,13 @@ public class MovieDetails extends AppCompatActivity {
         movieYear.setText(movie.releaseDate);
         movieRate.setText(movie.rate);
         movieOverview.setText(movie.overview);
-
+       boolean check = checkIfExists(movie.id);
+       if (check == true){
+           favouriteButton.setImageResource(R.drawable.ic_filledheart);
+       }
+       else {
+           favouriteButton.setImageResource(R.drawable.ic_heart);
+       }
 
         try {
             trailersSearchQueryExecute();
@@ -189,11 +196,13 @@ public class MovieDetails extends AppCompatActivity {
         } else {
             Uri uri = getContentResolver().insert(FavouritesContract.FavouritesEntry.CONTENT_URI, values);
             if (uri != null) {
+                favouriteButton.setImageResource(R.drawable.ic_filledheart);
                 Toast.makeText(this, movie.title + " added to your favourites successfully!", Toast.LENGTH_LONG).show();
             } else {
                 Toast.makeText(this, "failed", Toast.LENGTH_LONG).show();
             }
         }
+
     }
 
     private boolean checkIfExists (Long movieId){
@@ -216,15 +225,13 @@ public class MovieDetails extends AppCompatActivity {
        return  false;
     }
 
-
-
     public class FetchData implements AsyncTaskCompleteListener{
         @Override
         public void onMovieJsonTaskComplete(List<MovieModel> movies) {}
         @Override
         public void onTrailerJsonTaskComplete(List<TrailerModel> trailers) {
             trailersList =trailers;
-          TrailerAdapter adapter= new TrailerAdapter(trailersList, new TrailerAdapter.OnItemClickedListerner() {
+            TrailerAdapter adapter= new TrailerAdapter(trailersList, new TrailerAdapter.OnItemClickedListerner() {
                 @Override
                 public void onItemClicked(TrailerModel trailer) {
                     Intent intent = new Intent(Intent.ACTION_VIEW);

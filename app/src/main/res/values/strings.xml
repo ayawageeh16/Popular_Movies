@@ -22,4 +22,6 @@
     <string name="favourite_img">movie poster</string>
     <string name="delete">Delete</string>
     <string name="overview_label">Overview</string>
+    <string name="movie_year">released year</string>
+    <string name="movie_rate">movie rate</string>
 </resources>

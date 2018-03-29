@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import com.example.android.popularmovies.R;
 import com.example.android.popularmovies.data.FavouritesContract;
+import com.example.android.popularmovies.data.MovieModel;
 import com.squareup.picasso.Picasso;
 
 /**
@@ -23,9 +24,14 @@ public class FavouritesAdapter extends RecyclerView.Adapter<FavouritesAdapter.Fa
     Cursor cursor;
     int position;
     Context context;
+    OnItemClickedListener listener ;
 
-    public FavouritesAdapter(Cursor cursor){
+    public interface OnItemClickedListener{
+        void onItemClicked (MovieModel movie);
+    }
+    public FavouritesAdapter(Cursor cursor, OnItemClickedListener listener){
         this.cursor =cursor;
+        this.listener =listener;
     }
     public FavouritesAdapter(Context context){
         this.context=context;
@@ -48,8 +54,6 @@ public class FavouritesAdapter extends RecyclerView.Adapter<FavouritesAdapter.Fa
            holder.itemView.setTag(cursor.getLong(cursor.getColumnIndex(FavouritesContract.FavouritesEntry.COLUMN_MOVIE_ID)));
        }
     }
-
-
     @Override
     public int getItemCount() {
         return cursor.getCount();
@@ -58,17 +62,36 @@ public class FavouritesAdapter extends RecyclerView.Adapter<FavouritesAdapter.Fa
     public class FavouritesViewHolder extends RecyclerView.ViewHolder{
         ImageView poster;
         TextView title;
+        TextView rate;
+        TextView releasedDate;
         public FavouritesViewHolder(View itemView) {
             super(itemView);
             poster=itemView.findViewById(R.id.favourite_poster);
             title=itemView.findViewById(R.id.favourite_title);
+            rate=itemView.findViewById(R.id.tv_rate);
+            releasedDate=itemView.findViewById(R.id.tv_released);
         }
         public void Bind(final Cursor cursor){
-            String s =String.valueOf(cursor.getString(cursor.getColumnIndex(FavouritesContract.FavouritesEntry.COLUMN_MOVIE_POSTER)));
+            long movieId = cursor.getLong(cursor.getColumnIndex(FavouritesContract.FavouritesEntry.COLUMN_MOVIE_ID));
+            String movieTitle = String.valueOf(cursor.getString(cursor.getColumnIndex(FavouritesContract.FavouritesEntry.COLUMN_MOVIE_TITLE)));
+            String movieRate = String.valueOf(cursor.getString(cursor.getColumnIndex(FavouritesContract.FavouritesEntry.COLUMN_MOVIE_RATE)));
+            String movieYear = String.valueOf(cursor.getString(cursor.getColumnIndex(FavouritesContract.FavouritesEntry.COLUMN_MOVIE_RELEASE_DATE)));
+            String movieOverview = String.valueOf(cursor.getString(cursor.getColumnIndex(FavouritesContract.FavouritesEntry.COLUMN_MOVIE_OVERVIEW)));
+            String movieCover = String.valueOf(cursor.getString(cursor.getColumnIndex(FavouritesContract.FavouritesEntry.COLUMN_MOVIE_COVER)));
+            String moviePoster =String.valueOf(cursor.getString(cursor.getColumnIndex(FavouritesContract.FavouritesEntry.COLUMN_MOVIE_POSTER)));
+            final MovieModel movie =new MovieModel(movieTitle,movieYear,movieRate,movieOverview,moviePoster,movieCover,movieId);
             Picasso.with(poster.getContext())
-                    .load(s)
+                    .load(moviePoster)
                     .into(poster);
-            title.setText(String.valueOf(cursor.getString(cursor.getColumnIndex(FavouritesContract.FavouritesEntry.COLUMN_MOVIE_TITLE))));
+            title.setText(movieTitle);
+            rate.setText(movieRate);
+            releasedDate.setText(movieYear);
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    listener.onItemClicked(movie);
+                }
+            });
         }
     }
 }
