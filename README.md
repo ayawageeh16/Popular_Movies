@@ -1,7 +1,7 @@
 # Popular_Movies
 Udacity Android Developer Nanodegree project (stage1, stage 2) 
 An Android Application to update users with most popular and top Rated movies, 
-User can add movies to favourites movies sqlite database and can display the poster, movie details and overview will he is offline.
+User can add movies to favourites movies sqlite database and can display the poster, movie details and overview while he is offline.
 
 # Features: 
 
